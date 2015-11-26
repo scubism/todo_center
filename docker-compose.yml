@@ -1,0 +1,21 @@
+mongo:
+  container_name: mongo
+  image: mongo:3.0.7
+  volumes:
+    - /data/db
+  command: --smallfiles
+go_todo_api:
+  container_name: go_todo_api
+  build: ./go_todo_api
+  ports:
+   - "8001:3000"
+  environment:
+    MONGO_HOST: mongo
+    GIN_MODE: release
+react_todo_web:
+  container_name: react_todo_web
+  build: ./react_todo_web
+  ports:
+    - "8002:3000"
+  environment:
+    GIN_MODE: release

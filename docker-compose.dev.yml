@@ -1,0 +1,14 @@
+go_todo_api:
+  volumes:
+    - ./go_todo_api:/usr/src/app
+  command:
+    - dev
+  environment:
+    GIN_MODE: debug
+react_todo_web:
+  volumes:
+    - ./react_todo_web:/usr/src/app
+  command:
+    - dev
+  environment:
+    GIN_MODE: debug
