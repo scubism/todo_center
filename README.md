@@ -35,13 +35,21 @@ The following will build a VM based on Centos7 with Docker Engin and Docker Comp
 
 ```
 vagrant up
+# Use "vagrant suspend" and "vagrant resume" on your machine restart.
 ```
 
-Login to the VM and move to a shared directory "/vagrant".
+Login to the VM.
 
 ```
 vagrant ssh
-cd /vagrant
+# Now you are in /vagrant directory (not in /home/vagrant directory).
+```
+
+For the first time or environment changed, execute a init file.
+
+```
+./init.sh
+# This will create a docker-compose.yml file from the environment.
 ```
 
 ### Setup Containers For Production
@@ -68,13 +76,8 @@ docker ps -a
 You can access contents via public endpoints for microservices as follows.
 
 ```
-LOCALIP=$(ip addr | grep "global enp" | awk '{print $2}' | sed 's/\/.*$//')
-
-# For go_todo_api
-curl http://$LOCALIP:8001
-
-# For react_todo_web
-curl http://$LOCALIP:8002
+curl http://$LOCALIP:$GO_TODO_API_PORT
+curl http://$LOCALIP:$REACT_TODO_WEB_PORT
 ```
 
 ### Setup Containers For Development
@@ -87,11 +90,11 @@ Thus for development, we should run a mutable container beside the original.
 
 # For go_todo_api
 docker-compose stop go_todo_api
-docker-compose --x-networking -f docker-compose.yml -f docker-compose.dev.yml run -p 8001:3000 --rm go_todo_api
+docker-compose --x-networking -f docker-compose.yml -f docker-compose.dev.yml run -p $GO_TODO_API_PORT:3000 --rm go_todo_api
 
 # For react_todo_web
 docker-compose stop react_todo_web
-docker-compose --x-networking -f docker-compose.yml -f docker-compose.dev.yml run -p 8002:3000 --rm react_todo_web
+docker-compose --x-networking -f docker-compose.yml -f docker-compose.dev.yml run -p $REACT_TODO_WEB_PORT:3000 --rm react_todo_web
 ```
 
 Notice that "-f" option specify docker compose setting files which can be overwritten, and "--rm" option will destroy the built container after exit.
