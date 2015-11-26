@@ -1,8 +1,8 @@
-# Todo Center
+# TODO Center
 
 # THIS PROJECT IS A SAMPLE PROTOTYPE TO BUILD MICROSERVICES
 
-Todo Center is a central repository for a complete TODO app which is composed of distributed microservices.
+TODO Center is a central repository for a complete TODO app which is composed of distributed microservices.
 
 ## Installation
 
