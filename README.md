@@ -86,21 +86,35 @@ curl http://$LOCALIP:$REACT_TODO_WEB_PORT
 The above containers are immutable for production.
 Thus for development, we should run a mutable container beside the original.
 
-```
-# For each service, stop the production container to use same port and run another container for development
+For go_todo_api:
 
+```
 # For go_todo_api
+# stop the production container
 docker-compose stop go_todo_api
+# run another container for development
 docker-compose --x-networking -f docker-compose.yml -f docker-compose.dev.yml run -p $GO_TODO_API_PORT:3000 --rm go_todo_api
 
-# For react_todo_web
+# if you finished development, start the production container
+docker-compose start go_todo_api
+```
+
+
+For react_todo_web:
+
+```
+# stop the production container
 docker-compose stop react_todo_web
+# run another container for development
 docker-compose --x-networking -f docker-compose.yml -f docker-compose.dev.yml run -p $REACT_TODO_WEB_PORT:3000 --rm react_todo_web
+
+# if you finished development, start the production container
+docker-compose start react_todo_web
 ```
 
 Notice that "-f" option specify docker compose setting files which can be overwritten, and "--rm" option will destroy the built container after exit.
 
-You can access mongodb directory from a mongo container.
+For the mongo container, you can access mongodb directory from another mongo container.
 
 ```
 # Run a mongo container to inspect
