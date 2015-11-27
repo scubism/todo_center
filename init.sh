@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source ./docker.env
+source ./default.env
 
 echo LOCALIP=$LOCALIP
 echo GO_TODO_API_PORT=$GO_TODO_API_PORT

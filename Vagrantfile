@@ -55,7 +55,7 @@ chmod +x /usr/local/bin/docker-compose
 
 /etc/init.d/vboxadd setup
 
-echo "source /vagrant/docker.env" >> /home/vagrant/.bashrc
+echo "source /vagrant/default.env" >> /home/vagrant/.bashrc
 echo "cd /vagrant" >> /home/vagrant/.bashrc
 
   EOC
