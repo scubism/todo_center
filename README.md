@@ -81,7 +81,7 @@ curl http://$LOCALIP:$REACT_TODO_WEB_PORT
 # Here, the variables such as $LOCALIP are defined in default.env
 ```
 
-Check the url on browser too.
+Check the urls on your browser too.
 
 ### Setup Containers For Development
 
