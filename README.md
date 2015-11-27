@@ -89,7 +89,6 @@ Thus for development, we should run a mutable container beside the original.
 For go_todo_api:
 
 ```
-# For go_todo_api
 # stop the production container
 docker-compose stop go_todo_api
 # run another container for development
