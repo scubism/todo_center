@@ -78,6 +78,7 @@ You can access contents via public endpoints for microservices as follows.
 ```
 curl http://$LOCALIP:$GO_TODO_API_PORT
 curl http://$LOCALIP:$REACT_TODO_WEB_PORT
+# Here, the variables such as $LOCALIP are defined in default.env
 ```
 
 ### Setup Containers For Development
