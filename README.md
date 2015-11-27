@@ -81,6 +81,8 @@ curl http://$LOCALIP:$REACT_TODO_WEB_PORT
 # Here, the variables such as $LOCALIP are defined in default.env
 ```
 
+Check the url on browser too.
+
 ### Setup Containers For Development
 
 The above containers are immutable for production.
