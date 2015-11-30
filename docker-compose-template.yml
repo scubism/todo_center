@@ -19,4 +19,4 @@ react_todo_web:
     - "{{ REACT_TODO_WEB_PORT }}:3000"
   environment:
     GIN_MODE: release
-    TODO_API_ENDPOINT: "http://{{ LOCALIP }}:{{ GO_TODO_API_PORT }}"
+    TODO_API_ENDPOINT: "http://{{ HOST }}:{{ GO_TODO_API_PORT }}"
