@@ -119,9 +119,11 @@ For the mongo container, you can access mongodb directory from another mongo con
 
 ```
 # Run a mongo container to inspect
-docker-compose --x-networking -f docker-compose.yml -f docker-compose.dev.yml run --rm mongo
+docker-compose --x-networking -f docker-compose.yml -f docker-compose.dev.yml run --rm mongo bash
 # Invoke the mongodb client
-mongo
+mongo mongo.vagrant
+# Type any mongo command
+use go_todo_api
 ```
 
 ## Roadmap
