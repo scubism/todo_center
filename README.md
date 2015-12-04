@@ -35,6 +35,7 @@ The following will build a VM based on Centos7 with Docker Engin and Docker Comp
 
 ```
 vagrant up
+# Please wait for several minutes
 # Use "vagrant suspend" and "vagrant resume" on your machine restart.
 ```
 
@@ -63,6 +64,8 @@ docker-compose --x-networking up -d mongo
 # Build each microservice respectively
 docker-compose --x-networking up -d go_todo_api
 docker-compose --x-networking up -d react_todo_web
+
+# Please wait for several minutes for each build
 ```
 
 Notice that "--x-networking" option enables [Docker Networking](http://docs.docker.com/engine/userguide/networking/dockernetworks/).
@@ -93,10 +96,15 @@ For go_todo_api:
 ```
 # stop the production container
 docker-compose stop go_todo_api
+
 # run another container for development
 docker-compose --x-networking -f docker-compose.yml -f docker-compose.dev.yml run -p $GO_TODO_API_PORT:3000 --rm go_todo_api
 
-# if you finished development, start the production container
+# alternatively you can login to the container and run the server manually
+docker-compose --x-networking -f docker-compose.yml -f docker-compose.dev.yml run -p $GO_TODO_API_PORT:3000 --rm go_todo_api bash
+./docker-entrypoint.sh dev
+
+# if you finished development (left the container), start the production container
 docker-compose start go_todo_api
 ```
 
@@ -106,10 +114,15 @@ For react_todo_web:
 ```
 # stop the production container
 docker-compose stop react_todo_web
+
 # run another container for development
 docker-compose --x-networking -f docker-compose.yml -f docker-compose.dev.yml run -p $REACT_TODO_WEB_PORT:3000 --rm react_todo_web
 
-# if you finished development, start the production container
+# alternatively you can login to the container and run the server manually
+docker-compose --x-networking -f docker-compose.yml -f docker-compose.dev.yml run -p $REACT_TODO_WEB_PORT:3000 --rm react_todo_web bash
+./docker-entrypoint.sh dev
+
+# if you finished development (left the container), start the production container
 docker-compose start react_todo_web
 ```
 
