@@ -139,6 +139,20 @@ mongo mongo.vagrant
 use go_todo_api
 ```
 
+#### How to recreate the production image?
+
+If you had developed your app, you need to update the production image.
+You can recreate the image from local cache as below.
+
+```
+# Rename the old image (preserve the image)
+docker tag vagrant_go_todo_api vagrant_go_todo_api_1
+docker rmi vagrant_go_todo_api
+# (Note that the prefix "vagrant_" will be changed to the top directory name)
+# Build the new image
+docker-compose --x-networking up -d go_todo_api
+```
+
 ## Roadmap
 
 - Create an oauth API with Redis backend
