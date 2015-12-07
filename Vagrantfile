@@ -32,6 +32,8 @@ Vagrant.configure(2) do |config|
 
   config.vm.provision "shell", inline: <<-EOC
 
+yum install -y deltarpm
+
 yum -y update
 
 yum -y install git
