@@ -35,9 +35,11 @@ The following will build a VM based on Centos7 with Docker Engin and Docker Comp
 
 ```
 vagrant up
-# Please wait for several minutes
-# Use "vagrant suspend" and "vagrant resume" on your machine restart.
+# For the first time, you should also type the following commands for share folder problem.
+vagrant plugin install vagrant-vbguest
+vagrant vbguest
 ```
+
 
 Login to the VM.
 

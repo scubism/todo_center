@@ -7,7 +7,7 @@
 
 Vagrant.configure(2) do |config|
   config.vm.box = "docker_vm_centos7"
-  config.vm.box_url = "https://atlas.hashicorp.com/puppetlabs/boxes/centos-7.0-64-puppet/versions/1.0.2/providers/virtualbox.box"
+  config.vm.box_url = "https://atlas.hashicorp.com/puppetlabs/boxes/centos-7.2-64-puppet/versions/1.0.0/providers/virtualbox.box"
 
   # config.vbguest.auto_update = false
   # config.vm.box_check_update = false
@@ -55,6 +55,7 @@ usermod -aG docker vagrant
 curl -L https://github.com/docker/compose/releases/download/1.5.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 
+yum install -y kernel-devel kernel-headers dkms gcc gcc-c++
 /etc/init.d/vboxadd setup
 
 echo "source /vagrant/default.env" >> /home/vagrant/.bashrc
