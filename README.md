@@ -155,6 +155,24 @@ docker rmi vagrant_go_todo_api
 docker-compose --x-networking up -d go_todo_api
 ```
 
+#### How to update live container mutably
+
+```
+# Update repository in host
+cd go_todo_api; git pull origin master; cd ..;
+# Copy the repository to container
+docker cp go_todo_api $CONTAINER_ID:/tmp
+# Enter the container
+docker exec -it $CONTAINER_ID bash
+# Remove directories except _vendor
+find -maxdepth 1 -type d -not -name _vendor -not -name "." -exec rm -irf {} \;
+cp -r /tmp/go_todo_api/* ./
+rm -rf /tmp/go_todo_api
+# (If necessary, execute gom install, gulp build, gulp dist, and etc..)
+exit
+docker-compose restart go_todo_api
+```
+
 ## Roadmap
 
 - Create an oauth API with Redis backend
