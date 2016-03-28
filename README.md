@@ -23,6 +23,12 @@ Then, clone each repository which provide a respective microservice.
 git clone https://github.com/scubism/go_todo_api.git
 ```
 
+- [PHP TODO API](https://github.com/scubism/php_todo_api): A TODO API server written in Go.
+
+```
+git clone https://github.com/scubism/php_todo_api.git
+```
+
 - [React TODO Web](https://github.com/scubism/react_todo_web): A TODO Web client based on react.js framework.
 
 ```
@@ -75,6 +81,7 @@ docker-compose up -d mongo
 
 # Build each microservice respectively
 docker-compose up -d go_todo_api
+docker-compose up -d php_todo_api
 docker-compose up -d react_todo_web
 
 # Please wait for several minutes for each build
@@ -90,6 +97,7 @@ You can access contents via public endpoints for microservices as follows.
 
 ```
 curl http://$HOST:$GO_TODO_API_PORT
+curl http://$HOST:$PHP_TODO_API_PORT
 curl http://$HOST:$REACT_TODO_WEB_PORT
 # Here, the variables such as $HOST are defined in default.env
 ```
@@ -118,6 +126,22 @@ docker-compose -f docker-compose.yml -f docker-compose.dev.yml run -p $GO_TODO_A
 docker-compose start go_todo_api
 ```
 
+For php_todo_api:
+
+```
+# stop the production container
+docker-compose stop php_todo_api
+
+# run another container for development
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml run -p $PHP_TODO_API_PORT:3000 --rm php_todo_api
+
+# alternatively you can login to the container and run the server manually
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml run -p $PHP_TODO_API_PORT:3000 --rm php_todo_api bash
+./docker-entrypoint.sh dev
+
+# if you finished development (left the container), start the production container
+docker-compose start php_todo_api
+```
 
 For react_todo_web:
 
@@ -147,6 +171,15 @@ docker-compose -f docker-compose.yml -f docker-compose.dev.yml run --rm mongo ba
 mongo mongo.vagrant
 # Type any mongo command
 use go_todo_api
+```
+
+For the mariadb container, you can access mariadb directory from another mariadb container.
+
+```
+# Run a mariadb container to inspect
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml run --rm mariadb bash
+# Invoke the mariadb client
+mysql -u root -p$DB_PASSWORD $DB_NAME
 ```
 
 #### How to recreate the production image?
