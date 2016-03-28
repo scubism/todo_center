@@ -1,22 +1,36 @@
-mongo:
-  container_name: mongo
-  image: mongo:3.0.7
-  volumes:
-    - /data/db
-  command: --smallfiles
-go_todo_api:
-  container_name: go_todo_api
-  build: ./go_todo_api
-  ports:
-   - "{{ GO_TODO_API_PORT }}:3000"
-  environment:
-    MONGO_HOST: mongo
-    GIN_MODE: release
-react_todo_web:
-  container_name: react_todo_web
-  build: ./react_todo_web
-  ports:
-    - "{{ REACT_TODO_WEB_PORT }}:3000"
-  environment:
-    GIN_MODE: release
-    TODO_API_ENDPOINT: "http://{{ HOST }}:{{ GO_TODO_API_PORT }}"
+version: '2'
+
+services:
+  mongo:
+    container_name: mongo
+    image: mongo:3.0.7
+    volumes:
+      - /data/db
+    command: --smallfiles
+  go_todo_api:
+    container_name: go_todo_api
+    build: ./go_todo_api
+    networks:
+      - back
+    dns: 8.8.8.8
+    ports:
+     - "{{ GO_TODO_API_PORT }}:3000"
+    environment:
+      MONGO_HOST: mongo
+      GIN_MODE: release
+    restart: on-failure:3
+  react_todo_web:
+    container_name: react_todo_web
+    build: ./react_todo_web
+    networks:
+      - back
+    dns: 8.8.8.8
+    ports:
+      - "{{ REACT_TODO_WEB_PORT }}:3000"
+    environment:
+      GIN_MODE: release
+      TODO_API_ENDPOINT: "http://{{ HOST }}:{{ GO_TODO_API_PORT }}"
+    restart: on-failure:3
+networks:
+  back:
+    driver: bridge

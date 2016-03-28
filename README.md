@@ -55,22 +55,30 @@ For the first time or environment changed, execute a init file.
 # This will create a docker-compose.yml file from the environment.
 ```
 
+If you have docker-engine order than 1.10.x, please upgrade it manually by:
+```
+sudo yum -y install docker-engine
+# Upgrade docker-compose to 1.6.2 manually
+sudo -i
+curl -L https://github.com/docker/compose/releases/download/1.6.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+exit
+chmod +x /usr/local/bin/docker-compose
+```
+
 ### Setup Containers For Production
 
 We use Docker Compose to build docker containers by a setting file "docker-compose.yml".
 
 ```
 # Build a mongodb server which is used by the following go_todo_api server
-docker-compose --x-networking up -d mongo
+docker-compose up -d mongo
 
 # Build each microservice respectively
-docker-compose --x-networking up -d go_todo_api
-docker-compose --x-networking up -d react_todo_web
+docker-compose up -d go_todo_api
+docker-compose up -d react_todo_web
 
 # Please wait for several minutes for each build
 ```
-
-Notice that "--x-networking" option enables [Docker Networking](http://docs.docker.com/engine/userguide/networking/dockernetworks/).
 
 Check the container statuses.
 
@@ -100,10 +108,10 @@ For go_todo_api:
 docker-compose stop go_todo_api
 
 # run another container for development
-docker-compose --x-networking -f docker-compose.yml -f docker-compose.dev.yml run -p $GO_TODO_API_PORT:3000 --rm go_todo_api
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml run -p $GO_TODO_API_PORT:3000 --rm go_todo_api
 
 # alternatively you can login to the container and run the server manually
-docker-compose --x-networking -f docker-compose.yml -f docker-compose.dev.yml run -p $GO_TODO_API_PORT:3000 --rm go_todo_api bash
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml run -p $GO_TODO_API_PORT:3000 --rm go_todo_api bash
 ./docker-entrypoint.sh dev
 
 # if you finished development (left the container), start the production container
@@ -118,10 +126,10 @@ For react_todo_web:
 docker-compose stop react_todo_web
 
 # run another container for development
-docker-compose --x-networking -f docker-compose.yml -f docker-compose.dev.yml run -p $REACT_TODO_WEB_PORT:3000 --rm react_todo_web
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml run -p $REACT_TODO_WEB_PORT:3000 --rm react_todo_web
 
 # alternatively you can login to the container and run the server manually
-docker-compose --x-networking -f docker-compose.yml -f docker-compose.dev.yml run -p $REACT_TODO_WEB_PORT:3000 --rm react_todo_web bash
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml run -p $REACT_TODO_WEB_PORT:3000 --rm react_todo_web bash
 ./docker-entrypoint.sh dev
 
 # if you finished development (left the container), start the production container
@@ -134,7 +142,7 @@ For the mongo container, you can access mongodb directory from another mongo con
 
 ```
 # Run a mongo container to inspect
-docker-compose --x-networking -f docker-compose.yml -f docker-compose.dev.yml run --rm mongo bash
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml run --rm mongo bash
 # Invoke the mongodb client
 mongo mongo.vagrant
 # Type any mongo command
@@ -152,7 +160,7 @@ docker tag vagrant_go_todo_api vagrant_go_todo_api_1
 docker rmi vagrant_go_todo_api
 # (Note that the prefix "vagrant_" will be changed to the top directory name)
 # Build the new image
-docker-compose --x-networking up -d go_todo_api
+docker-compose up -d go_todo_api
 ```
 
 #### How to update live container mutably

@@ -12,7 +12,7 @@ Vagrant.configure(2) do |config|
   # config.vbguest.auto_update = false
   # config.vm.box_check_update = false
   if Vagrant.has_plugin?("vagrant-vbguest") then
-    config.vbguest.auto_update = false
+    config.vbguest.auto_update = true
   end
 
   config.vm.network "private_network", ip: "100.94.47.221"
@@ -52,7 +52,7 @@ service docker start
 systemctl enable docker.service
 usermod -aG docker vagrant
 
-curl -L https://github.com/docker/compose/releases/download/1.5.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+curl -L https://github.com/docker/compose/releases/download/1.6.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 
 yum install -y kernel-devel kernel-headers dkms gcc gcc-c++
