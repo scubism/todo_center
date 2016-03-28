@@ -12,6 +12,8 @@ services:
     volumes:
       - /data/mariadb/data:/bitnami/mariadb/data
       - /data/mariadb/conf:/bitnami/mariadb/conf
+    ports:
+      - "{{ DB_PORT }}:3306"
     environment:
       MARIADB_PASSWORD: {{ DB_PASSWORD }}
       MARIADB_DATABASE: {{ DB_NAME }}
@@ -36,7 +38,12 @@ services:
     ports:
       - "{{ PHP_TODO_API_PORT }}:80"
     environment:
+      APP_ENV: production
       DB_HOST: mariadb
+      DB_USER: {{ DB_USER }}
+      DB_PASSWORD: {{ DB_PASSWORD }}
+      DB_NAME: {{ DB_NAME }}
+      DB_PORT: {{ DB_PORT }}
     restart: on-failure:3
   react_todo_web:
     container_name: react_todo_web

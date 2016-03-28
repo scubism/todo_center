@@ -12,7 +12,7 @@ services:
     volumes:
       - ./php_todo_api:/var/www/php_todo_api
     environment:
-      DEV_MODE: 1
+      APP_ENV: local
   react_todo_web:
     volumes:
       - ./react_todo_web:/usr/src/app
