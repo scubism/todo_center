@@ -133,10 +133,10 @@ For php_todo_api:
 docker-compose stop php_todo_api
 
 # run another container for development
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml run -p $PHP_TODO_API_PORT:3000 --rm php_todo_api
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml run -p $PHP_TODO_API_PORT:80 --rm php_todo_api
 
 # alternatively you can login to the container and run the server manually
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml run -p $PHP_TODO_API_PORT:3000 --rm php_todo_api bash
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml run -p $PHP_TODO_API_PORT:80 --rm php_todo_api bash
 ./docker-entrypoint.sh dev
 
 # if you finished development (left the container), start the production container
