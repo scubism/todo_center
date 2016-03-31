@@ -4,11 +4,15 @@ services:
   mongo:
     container_name: mongo
     image: mongo:3.0.7
+    networks:
+      - back
     volumes:
       - /data/db
     command: --smallfiles
   mariadb:
     image: bitnami/mariadb
+    networks:
+      - back
     volumes:
       - /data/mariadb/data:/bitnami/mariadb/data
       - /data/mariadb/conf:/bitnami/mariadb/conf
@@ -17,6 +21,18 @@ services:
     environment:
       MARIADB_PASSWORD: {{ DB_PASSWORD }}
       MARIADB_DATABASE: {{ DB_NAME }}
+    restart: on-failure:3
+  todo_api_gateway:
+    container_name: todo_api_gateway
+    build: ./todo_api_gateway
+    networks:
+      - back
+    dns: 8.8.8.8
+    ports:
+      - "{{ API_GATEWAY_PORT }}:80"
+    links:
+      - php_todo_api:php
+    restart: on-failure:3
   go_todo_api:
     container_name: go_todo_api
     build: ./go_todo_api
@@ -36,7 +52,7 @@ services:
       - back
     dns: 8.8.8.8
     ports:
-      - "{{ PHP_TODO_API_PORT }}:80"
+      - "{{ PHP_FPM_PORT }}:9000"
     environment:
       APP_ENV: production
       DB_HOST: mariadb

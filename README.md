@@ -17,6 +17,12 @@ cd todo_center
 
 Then, clone each repository which provide a respective microservice.
 
+- [Todo API Gateway](https://github.com/scubism/todo_api_gateway.git): API Gateway
+
+```
+git clone https://github.com/scubism/todo_api_gateway.git
+```
+
 - [Go TODO API](https://github.com/scubism/go_todo_api): A TODO API server written in Go.
 
 ```
@@ -79,10 +85,16 @@ We use Docker Compose to build docker containers by a setting file "docker-compo
 # Build a mongodb server which is used by the following go_todo_api server
 docker-compose up -d mongo
 
+# Build a mariadb server which is used by the following php_todo_api server
+docker-compose up -d mariadb
+
 # Build each microservice respectively
 docker-compose up -d go_todo_api
 docker-compose up -d php_todo_api
 docker-compose up -d react_todo_web
+
+# Build API Gateway (Nginx)
+docker-compose up -d todo_api_gateway
 
 # Please wait for several minutes for each build
 ```
@@ -97,8 +109,8 @@ You can access contents via public endpoints for microservices as follows.
 
 ```
 curl http://$HOST:$GO_TODO_API_PORT
-curl http://$HOST:$PHP_TODO_API_PORT
 curl http://$HOST:$REACT_TODO_WEB_PORT
+curl http://$HOST # PHP TODO API
 # Here, the variables such as $HOST are defined in default.env
 ```
 

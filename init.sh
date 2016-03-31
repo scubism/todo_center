@@ -10,6 +10,8 @@ echo DB_PASSWORD=$DB_PASSWORD
 echo DB_NAME=$DB_NAME
 echo DB_USER=$DB_USER
 echo DB_PORT=$DB_PORT
+echo API_GATEWAY_PORT=$API_GATEWAY_PORT
+echo PHP_FPM_PORT=$PHP_FPM_PORT
 
 # find and replace
 sed -e "s/{{ HOST }}/$HOST/g" \
@@ -20,6 +22,8 @@ sed -e "s/{{ HOST }}/$HOST/g" \
     -e "s/{{ DB_NAME }}/$DB_NAME/g" \
     -e "s/{{ DB_USER }}/$DB_USER/g" \
     -e "s/{{ DB_PORT }}/$DB_PORT/g" \
+    -e "s/{{ API_GATEWAY_PORT }}/$API_GATEWAY_PORT/g" \
+    -e "s/{{ PHP_FPM_PORT }}/$PHP_FPM_PORT/g" \
     < docker-compose-template.yml \
     > docker-compose.yml
 
