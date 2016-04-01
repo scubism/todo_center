@@ -2,4 +2,5 @@
 go_todo_api
 php_todo_api
 react_todo_web
+todo_api_gateway
 docker-compose.yml
