@@ -15,6 +15,7 @@ echo WEB_GATEWAY_PORT=$WEB_GATEWAY_PORT
 echo WEB_GATEWAY_SSL_PORT=$WEB_GATEWAY_SSL_PORT
 echo API_GATEWAY_PORT=$API_GATEWAY_PORT
 echo API_GATEWAY_SSL_PORT=$API_GATEWAY_SSL_PORT
+echo API_ENDPOINT=$API_ENDPOINT
 
 # find and replace
 sed -e "s/{{ HOST }}/$HOST/g" \
@@ -31,6 +32,7 @@ sed -e "s/{{ HOST }}/$HOST/g" \
     -e "s/{{ DB_PORT }}/$DB_PORT/g" \
     -e "s/{{ API_GATEWAY_PORT }}/$API_GATEWAY_PORT/g" \
     -e "s/{{ PHP_FPM_PORT }}/$PHP_FPM_PORT/g" \
+    -e "s/{{ API_ENDPOINT }}/$API_ENDPOINT/g" \
     < docker-compose-template.yml \
     > docker-compose.yml
 

@@ -112,9 +112,8 @@ docker ps -a
 You can access contents via public endpoints for microservices as follows.
 
 ```
-curl http://$HOST:$GO_TODO_API_PORT
-curl http://$HOST:$REACT_TODO_WEB_PORT
-curl http://$HOST # PHP TODO API
+curl https://$HOST:$API_GATEWAY_SSL_PORT
+curl https://$HOST:$WEB_GATEWAY_SSL_PORT
 # Here, the variables such as $HOST are defined in default.env
 ```
 
