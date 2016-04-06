@@ -93,8 +93,12 @@ docker-compose up -d go_todo_api
 docker-compose up -d php_todo_api
 docker-compose up -d react_todo_web
 
+# api_gateway requires the above api services already started
+# and need to generate cert files
+./todo_api_gateway/scripts/generate_self_certs.sh
 # Build API Gateway (Nginx)
 docker-compose up -d todo_api_gateway
+
 
 # Please wait for several minutes for each build
 ```
@@ -108,9 +112,8 @@ docker ps -a
 You can access contents via public endpoints for microservices as follows.
 
 ```
-curl http://$HOST:$GO_TODO_API_PORT
-curl http://$HOST:$REACT_TODO_WEB_PORT
-curl http://$HOST # PHP TODO API
+curl https://$HOST:$API_GATEWAY_SSL_PORT
+curl https://$HOST:$WEB_GATEWAY_SSL_PORT
 # Here, the variables such as $HOST are defined in default.env
 ```
 
@@ -145,11 +148,9 @@ For php_todo_api:
 docker-compose stop php_todo_api
 
 # run another container for development
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml run -p $PHP_TODO_API_PORT:80 --rm php_todo_api
-
-# alternatively you can login to the container and run the server manually
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml run -p $PHP_TODO_API_PORT:80 --rm php_todo_api bash
-./docker-entrypoint.sh dev
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml run -d --rm php_todo_api
+docker-compose exec -it vagrant_php_todo_api_run_1 bash
+./docker-entrypoint.sh
 
 # if you finished development (left the container), start the production container
 docker-compose start php_todo_api
