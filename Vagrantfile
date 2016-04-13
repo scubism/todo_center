@@ -58,6 +58,8 @@ chmod +x /usr/local/bin/docker-compose
 yum install -y kernel-devel kernel-headers dkms gcc gcc-c++
 /etc/init.d/vboxadd setup
 
+echo "cd /vagrant" >> /home/vagrant/.bashrc
+
   EOC
 
 end
