@@ -148,12 +148,14 @@ For php_todo_api:
 docker-compose stop php_todo_api
 
 # run another container for development
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml run -d --rm php_todo_api
-docker-compose exec -it vagrant_php_todo_api_run_1 bash
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d php_todo_api
+docker exec -it php_todo_api bash
 ./docker-entrypoint.sh
 
 # if you finished development (left the container), start the production container
-docker-compose start php_todo_api
+docker rm -f php_todo_api
+docker rmi vagrant_php_todo_api
+docker-compose up -d php_todo_api
 ```
 
 For react_todo_web:
