@@ -1,0 +1,6 @@
+php_todo_api:
+  enabled: false
+go_todo_api:
+  enabled: true
+todo_api_gateway:
+  todo_api_service: "go_todo_api"

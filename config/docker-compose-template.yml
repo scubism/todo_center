@@ -1,0 +1,115 @@
+version: '2'
+
+services:
+  {{if (eq .Env.config_todo_api_gateway_enabled "true")}}
+  todo_api_gateway:
+    container_name: todo_api_gateway
+    build: ./todo_api_gateway
+    networks:
+      - back
+    dns: 8.8.8.8
+    ports:
+      - "{{ .Env.config_todo_api_gateway_port }}:443"
+      - "{{ .Env.config_todo_api_gateway_web_port }}:8443"
+    environment:
+      API_ENDPOINT: {{ .Env.config_todo_api_gateway_todo_api_service }}
+      TERM: linux
+    depends_on:
+      {{if (eq .Env.config_todo_api_gateway_todo_api_service "php_todo_api")}}
+      - php_todo_api
+      {{else if (eq .Env.config_todo_api_gateway_todo_api_service "go_todo_api")}}
+      - go_todo_api
+      {{end}}
+    restart: on-failure:3
+  {{end}}
+
+  {{if (eq .Env.config_php_todo_api_enabled "true")}}
+  mariadb:
+    container_name: mariadb
+    image: bitnami/mariadb
+    networks:
+      - back
+    volumes:
+      - /data/mariadb/data:/bitnami/mariadb/data
+      - /data/mariadb/conf:/bitnami/mariadb/conf
+    ports:
+      - "{{ .Env.config_mariadb_port }}:3306"
+    environment:
+      MARIADB_PASSWORD: {{ .Env.config_mariadb_password }}
+      MARIADB_DATABASE: {{ .Env.config_mariadb_database }}
+      TERM: linux
+    restart: on-failure:3
+  {{end}}
+
+  {{if (eq .Env.config_php_todo_api_enabled "true")}}
+  php_todo_api:
+    container_name: php_todo_api
+    build: ./php_todo_api
+    networks:
+      - back
+    dns: 8.8.8.8
+    ports:
+      - "{{ .Env.config_php_todo_api_port }}:9000"
+    environment:
+      APP_ENV: production
+      DB_HOST: mariadb
+      DB_USER: {{ .Env.config_mariadb_user }}
+      DB_PASSWORD: {{ .Env.config_mariadb_password }}
+      DB_NAME: {{ .Env.config_mariadb_database }}
+      DB_PORT: {{ .Env.config_mariadb_port }}
+      TERM: linux
+    depends_on:
+      - mariadb
+    restart: on-failure:3
+  {{end}}
+
+  {{if (eq .Env.config_go_todo_api_enabled "true")}}
+  mongo:
+    container_name: mongo
+    image: mongo:3.0.7
+    ports:
+      - "{{ .Env.config_mongo_port }}:27017"
+    networks:
+      - back
+    volumes:
+      - /data/mongo/db:/data/db
+      - /data/mongo/configdb:/data/configdb
+  {{end}}
+
+  {{if (eq .Env.config_go_todo_api_enabled "true")}}
+  go_todo_api:
+    container_name: go_todo_api
+    build: ./go_todo_api
+    networks:
+      - back
+    dns: 8.8.8.8
+    ports:
+     - "{{ .Env.config_go_todo_api_port }}:3000"
+    environment:
+      MONGO_HOST: mongo
+      MONGO_PORT: {{ .Env.config_mongo_port }}
+      MONGO_DB: {{ .Env.config_mongo_database }}
+      GIN_MODE: release
+    depends_on:
+      - mongo
+    restart: on-failure:3
+  {{end}}
+
+  {{if (eq .Env.config_react_todo_web_enabled "true")}}
+  react_todo_web:
+    container_name: react_todo_web
+    build: ./react_todo_web
+    networks:
+      - back
+    dns: 8.8.8.8
+    ports:
+      - "{{ .Env.config_react_todo_web_port }}:3000"
+    environment:
+      GIN_MODE: release
+      TODO_API_ENDPOINT: "https://{{ .Env.config_host }}:{{ .Env.config_todo_api_gateway_port }}"
+    restart: on-failure:3
+  {{end}}
+
+networks:
+  back:
+    driver: bridge
