@@ -4,7 +4,10 @@
 # Docker host server info
 host: ""
 
-# Settings for each service
+# Specify a base service defined in docker-compose-common.yml
+base_service: "default_base_service"
+
+# === Settings for each service ===
 php_todo_api:
   enabled: true
   port: 8001
@@ -24,11 +27,9 @@ todo_api_gateway:
   web_port: 8443
 
 mongo:
-  port: 27017
   database: "todo"
 
 mariadb:
-  port: 3306
   database: "todo"
   user: "root"
   password: "pass"
