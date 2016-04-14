@@ -67,14 +67,14 @@ For the first time or environment changed, execute a init file.
 # This will create a docker-compose.yml file from the environment.
 ```
 
-If you have docker-engine order than 1.10.x, please upgrade it manually by:
+If you have docker-engine order than 1.11, please upgrade it manually by:
 ```
 sudo yum -y install docker-engine
-# Upgrade docker-compose to 1.6.2 manually
+# Upgrade docker-compose to 1.7.0 manually
 sudo -i
-curl -L https://github.com/docker/compose/releases/download/1.6.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
-exit
+curl -L https://github.com/docker/compose/releases/download/1.7.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
+exit
 ```
 
 ### Setup Containers For Production
@@ -101,6 +101,9 @@ docker-compose up -d todo_api_gateway
 
 
 # Please wait for several minutes for each build
+# Added the `--build` flag to `docker-compose up` to force docker build a new
+image.
+# Example: `docker-compose up --build -d php_todo_api`
 ```
 
 Check the container statuses.
