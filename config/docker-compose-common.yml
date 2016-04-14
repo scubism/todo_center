@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+  default_base_service:
+    image: alpine
+    networks:
+      - back
+    dns: 8.8.8.8
+    environment:
+      TERM: linux
+    restart: on-failure:3
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "2"
