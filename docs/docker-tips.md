@@ -18,6 +18,8 @@ Show container logs
 
 ```
 docker logs $CONTAINER
+# Follow log output
+docker logs -f $CONTAINER
 ```
 
 ## Basic operations
@@ -44,12 +46,15 @@ Run a container
 
 ```
 docker-compose up -d $CONTAINER
+
+# Add the `--build` flag to force it to build a new image.
+docker-compose up --build -d $CONTAINER
 ```
 
 Run a instance container with no entrypoint
 
 ```
-docker-compose run --rm --entrypoint=bash todo_api_gateway
+docker-compose run --rm --entrypoint=bash $CONTAINER
 ```
 
 Login to a running container
@@ -58,9 +63,12 @@ Login to a running container
 docker exec -it $CONTAINER bash
 ```
 
-Remove a running container
+Remove a container
 
 ```
+# For stopped containers
+docker rm $CONTAINER
+# For running containers
 docker rm -f $CONTAINER
 ```
 
@@ -86,4 +94,34 @@ docker login
 
 ```
 docker push $IMAGE
+```
+
+## Start a container for development
+
+```
+# Remove the previous container for mount change
+docker rm -f $CONTAINER
+
+# Start the container with development settings
+# the "-f" option specify docker compose setting files which can be overwritten
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d $CONTAINER
+
+# Enter the container
+docker exec -it $CONTAINER bash
+
+# === Execute any command ===
+go run main.go &
+etc..
+```
+
+
+## Upgrade docker-engine and docker-compose
+
+```
+# Upgrade docker-engine
+sudo yum -y install docker-engine
+
+# Upgrade docker-compose to 1.7.0 manually
+sudo curl -L https://github.com/docker/compose/releases/download/1.7.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
 ```
