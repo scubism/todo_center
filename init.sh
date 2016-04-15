@@ -70,7 +70,6 @@ clone_repo() {
   local repo=$1
   local confname="config_${repo}_git_url"
   url=${!confname}
-  echo $repo
   if [ ! -d $repo ]; then
     git clone $url $repo
   fi
@@ -80,6 +79,15 @@ clone_repos() {
   for ((i = 0; i < ${#available_repos[@]}; i++)) {
       clone_repo ${available_repos[i]}
   }
+}
+
+setup_repos() {
+  if [ $config_todo_api_gateway_enabled != "false" ]; then
+    if [ ! -e "todo_api_gateway/server.crt" ]; then
+      echo 'generate self certs..'
+      ./todo_api_gateway/scripts/generate_self_certs.sh
+    fi
+  fi
 }
 
 # ==============================================================================
@@ -93,5 +101,6 @@ load_config
 generate_docker_compose_file
 make_data_dirs
 clone_repos
+setup_repos
 
 echo "Finished!"
