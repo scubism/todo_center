@@ -2,6 +2,8 @@
 
 set -e
 
+available_repos=()
+
 install_dockernize() {
   if [ ! -e "/usr/local/bin/dockerize" ]; then
     echo "Installing dockernize.."
@@ -29,6 +31,21 @@ load_config() {
   echo "=== variables ==="
   printenv | grep config_
   echo "================="
+
+  local repos=($(printenv | grep '^config_.\+_git_url=.\+$' | sed "s/^config_//g" | sed "s/_git_url=.\+$//g"));
+
+  for ((i = 0; i < ${#repos[@]}; i++)) {
+      local confname="config_${repos[i]}_enabled"
+      if [ ${!confname} != "false" ]; then
+        available_repos=("${available_repos[@]}" ${repos[i]})
+      fi
+  }
+
+  echo "=== available repos ==="
+  for ((i = 0; i < ${#available_repos[@]}; i++)) {
+      echo "${available_repos[i]}"
+  }
+  echo "======================="
 }
 
 generate_docker_compose_file() {
@@ -49,6 +66,22 @@ make_data_dirs() {
   fi
 }
 
+clone_repo() {
+  local repo=$1
+  local confname="config_${repo}_git_url"
+  url=${!confname}
+  echo $repo
+  if [ ! -d $repo ]; then
+    git clone $url $repo
+  fi
+}
+
+clone_repos() {
+  for ((i = 0; i < ${#available_repos[@]}; i++)) {
+      clone_repo ${available_repos[i]}
+  }
+}
+
 # ==============================================================================
 # Main
 # ==============================================================================
@@ -59,5 +92,6 @@ install_dockernize
 load_config
 generate_docker_compose_file
 make_data_dirs
+clone_repos
 
 echo "Finished!"

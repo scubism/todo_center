@@ -10,18 +10,26 @@ base_service: "default_base_service"
 # === Settings for each service ===
 php_todo_api:
   enabled: true
+  git:
+    url: https://github.com/scubism/php_todo_api.git
   port: 8001
 
 go_todo_api:
   enabled: false
+  git:
+    url: https://github.com/scubism/go_todo_api.git
   port: 8002
 
 react_todo_web:
   enabled: true
+  git:
+    url: https://github.com/scubism/react_todo_web.git
   port: 8100
 
 todo_api_gateway:
   enabled: true
+  git:
+    url: https://github.com/scubism/todo_api_gateway.git
   port: 443
   todo_api_service: "php_todo_api"
   web_port: 8443
