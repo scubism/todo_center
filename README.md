@@ -40,7 +40,7 @@ Edit the local configuration if needed.
 vi config/config-local.yml
 ```
 
-Execute a init file for the first time or environment changed.
+Execute a init file for the first time or config changed.
 
 ```
 ./init.sh
@@ -64,14 +64,15 @@ docker ps -a
 You can access contents via public endpoints for microservices as follows.
 
 ```
-# load config environment
+# Load config environment
 eval $(./init.sh | grep config_)
 
 # For TODO API
-curl https://$config_host:$config_todo_api_gateway_port
+curl -k https://$config_host:$config_todo_api_gateway_port
+# -k option allows connections to SSL sites without certs
 
 # For Web
-curl https://$config_host:$config_todo_api_gateway_web_port
+curl -k https://$config_host:$config_todo_api_gateway_web_port
 # Check the url on your browser too.
 ```
 
