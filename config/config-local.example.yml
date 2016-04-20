@@ -1,3 +1,6 @@
+# Add your custom configuration here
+
+# The following is a sample ocnfig to use go_todo_api instead of php_todo_api.
 php_todo_api:
   enabled: false
 go_todo_api:
