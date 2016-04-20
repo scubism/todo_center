@@ -101,9 +101,8 @@ docker exec -it $CONTAINER bash
 # === Execute any commands ===
 ...
 # Typically you will run your app in background process
-./docker-entrypoint.sh & export APP_PID=$!
-# And kill the process if needed
-pkill -P $APP_PID
+./docker-entrypoint.sh &
+# kill the process if needed
 ```
 
 ## License

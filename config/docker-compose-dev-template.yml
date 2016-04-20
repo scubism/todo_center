@@ -4,7 +4,14 @@ services:
   {{if (eq .Env.config_php_todo_api_enabled "true")}}
   php_todo_api:
     volumes:
-      - ./php_todo_api:/var/www/html
+      - ./php_todo_api/app:/var/www/html/app
+      - ./php_todo_api/bootstrap:/var/www/html/bootstrap
+      - ./php_todo_api/database:/var/www/html/database
+      - ./php_todo_api/public:/var/www/html/public
+      - ./php_todo_api/resources:/var/www/html/resources
+      - ./php_todo_api/tests:/var/www/html/tests
+      - ./php_todo_api/composer.json:/var/www/html/composer.json
+      - ./php_todo_api/composer.lock:/var/www/html/composer.lock
     entrypoint:
       - sleep
     command:
