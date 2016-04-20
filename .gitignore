@@ -4,4 +4,5 @@
 /react_todo_web
 /todo_api_gateway
 /docker-compose.yml
+/docker-compose-dev.yml
 /config/config-local.yml

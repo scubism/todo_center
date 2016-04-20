@@ -50,6 +50,7 @@ load_config() {
 
 generate_docker_compose_file() {
   eval $(dockerize -template config/docker-compose-template.yml:docker-compose.yml)
+  eval $(dockerize -template config/docker-compose-dev-template.yml:docker-compose-dev.yml)
 }
 
 make_data_dirs() {

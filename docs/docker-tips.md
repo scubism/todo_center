@@ -96,25 +96,6 @@ docker login
 docker push $IMAGE
 ```
 
-## Start a container for development
-
-```
-# Remove the previous container for mount change
-docker rm -f $CONTAINER
-
-# Start the container with development settings
-# the "-f" option specify docker compose setting files which can be overwritten
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d $CONTAINER
-
-# Enter the container
-docker exec -it $CONTAINER bash
-
-# === Execute any command ===
-go run main.go &
-etc..
-```
-
-
 ## Upgrade docker-engine and docker-compose
 
 ```

@@ -79,6 +79,33 @@ curl -k https://$config_host:$config_todo_api_gateway_web_port
 See [docs/docker-tips.md](https://github.com/scubism/todo_center/blob/master/docs/docker-tips.md) for detail docker operations.
 
 
+## Development
+
+By default, it is not sync for a target source folder between the host and a container.
+So, in development, you should recreate the container in a development mode which will sync the folder.
+
+```
+# Set container
+CONTAINER=php_todo_api
+
+# Remove the previous container for mount change
+docker rm -f $CONTAINER
+
+# Start the container with development settings
+# the "-f" option specify docker compose setting files which can be overwritten
+docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d $CONTAINER
+
+# Enter the container
+docker exec -it $CONTAINER bash
+
+# === Execute any commands ===
+...
+# Typically you will run your app in background process
+./docker-entrypoint.sh & export APP_PID=$!
+# And kill the process if needed
+pkill -P $APP_PID
+```
+
 ## License
 
 Released under the MIT License.

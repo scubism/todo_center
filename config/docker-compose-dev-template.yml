@@ -1,0 +1,36 @@
+version: '2'
+
+services:
+  {{if (eq .Env.config_php_todo_api_enabled "true")}}
+  php_todo_api:
+    volumes:
+      - ./php_todo_api:/var/www/html
+    entrypoint:
+      - sleep
+    command:
+      - "1000000000"
+    environment:
+      APP_ENV: local
+  {{end}}
+  {{if (eq .Env.config_go_todo_api_enabled "true")}}
+  go_todo_api:
+    volumes:
+      - ./go_todo_api:/go/src/todo_center/go_todo_api
+    entrypoint:
+      - sleep
+    command:
+      - "1000000000"
+    environment:
+      GIN_MODE: debug
+  {{end}}
+  {{if (eq .Env.config_react_todo_web_enabled "true")}}
+  react_todo_web:
+    volumes:
+      - ./react_todo_web:/go/src/todo_center/react_todo_web
+    entrypoint:
+      - sleep
+    command:
+      - "1000000000"
+    environment:
+      GIN_MODE: debug
+  {{end}}
