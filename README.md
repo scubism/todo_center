@@ -105,6 +105,10 @@ docker exec -it $CONTAINER bash
 # kill the process if needed
 ```
 
+## Benchmarking
+Please read [docs/benchmark-with-ab.md](https://github.com/scubism/todo_center/blob/master/docs/benchmark-with-ab.md) for detail.
+
+
 ## License
 
 Released under the MIT License.
