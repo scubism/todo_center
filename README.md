@@ -108,6 +108,41 @@ docker exec -it $CONTAINER bash
 ## Benchmarking
 Please read [docs/benchmark-with-ab.md](https://github.com/scubism/todo_center/blob/master/docs/benchmark-with-ab.md) for detail.
 
+## API Documentation with Swagger
+This project use Swagger for documenting backend API.
+To use it, create your own `config-local.yml` from `config-local.example.yml`:
+```
+cp ./config/config-local{.example,}.yml
+```
+
+Change `compose_mode` in `config-local.yml` to __full__
+```
+# Compose Mode: min|full
+#   - min: without swagger_ui & swagger_editor
+#   - full: with swagger_ui & swagger_editor
+compose_mode: full
+```
+
+Run `init.sh` to re-generate the `docker-compose.yml` file:
+```
+sh ./init.sh
+```
+
+Start __swagger_ui__ & __swagger_editor__ containers:
+```
+docker-compose scale swagger_ui=1 swagger_editor=1
+```
+
+Open these url on your browser:
+```
+eval $(./init.sh | grep config_)
+echo https://$config_host:$config_swagger_ui_port
+echo https://$config_host:$config_swagger_editor_port
+```
+
+* Notice: 
+  - Make sure to expose swagger.yml somewhere in your api for using __swagger_ui__, for example "/v1/swagger.yml".
+  - Use [OpenAPI Specification v2.0](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md) for you swagger.yml file.
 
 ## License
 
