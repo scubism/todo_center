@@ -1,9 +1,10 @@
 # Add your custom configuration here
 
-# The following is a sample ocnfig to use go_todo_api instead of php_todo_api.
+# The following is a sample config to use go_todo_api instead of php_todo_api.
 php_todo_api:
   enabled: false
 go_todo_api:
   enabled: true
 todo_api_gateway:
   todo_api_service: "go_todo_api"
+compose_mode: full

@@ -102,6 +102,33 @@ services:
     environment:
       GIN_MODE: release
       TODO_API_ENDPOINT: "https://{{ .Env.config_host }}:{{ .Env.config_todo_api_gateway_port }}"
+    depends_on:
+      - todo_api_gateway
+  {{end}}
+
+  {{if (eq .Env.config_compose_mode "full")}}
+  # We can add more services here
+  swagger_ui:
+    extends:
+      file: config/docker-compose-common.yml
+      service: {{ .Env.config_base_service }}
+    image: sjeandeaux/docker-swagger-ui:latest
+    container_name: swagger_ui
+    ports:
+      - {{ .Env.config_swagger_ui_port }}:8888
+    environment:
+      API_URL: "https://{{ .Env.config_host }}:{{ .Env.config_todo_api_gateway_port }}/v1/swagger.yml"
+    depends_on:
+      - todo_api_gateway
+
+  swagger_editor:
+    extends:
+      file: config/docker-compose-common.yml
+      service: {{ .Env.config_base_service }}
+    image: swaggerapi/swagger-editor
+    container_name: swagger_editor
+    ports:
+      - {{ .Env.config_swagger_editor_port }}:8080
   {{end}}
 
 networks:

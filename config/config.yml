@@ -7,6 +7,11 @@ host: ""
 # Specify a base service defined in docker-compose-common.yml
 base_service: "default_base_service"
 
+# Compose Mode: min|full
+#   - min: without swagger_ui & swagger_editor
+#   - full: with swagger_ui & swagger_editor
+compose_mode: min
+
 # === Settings for each service ===
 php_todo_api:
   enabled: true
@@ -41,3 +46,9 @@ mariadb:
   database: "todo"
   user: "root"
   password: "pass"
+
+swagger_ui:
+  port: 8888
+
+swagger_editor:
+  port: 8889
