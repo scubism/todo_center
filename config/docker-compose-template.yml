@@ -98,9 +98,10 @@ services:
     container_name: react_todo_web
     build: ./react_todo_web
     ports:
-      - "{{ .Env.config_react_todo_web_port }}:3000"
+      - "{{ .Env.config_react_todo_web_port }}:8080"
     environment:
-      GIN_MODE: release
+      PRODUCTION: "1"
+      SERVER_RENDERING: "1"
       TODO_API_ENDPOINT: "https://{{ .Env.config_host }}:{{ .Env.config_todo_api_gateway_port }}"
     depends_on:
       - todo_api_gateway

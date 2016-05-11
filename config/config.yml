@@ -30,6 +30,7 @@ react_todo_web:
   git:
     url: https://github.com/scubism/react_todo_web.git
   port: 8100
+  dev_port: 9090
 
 todo_api_gateway:
   enabled: true

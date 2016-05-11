@@ -33,11 +33,21 @@ services:
   {{if (eq .Env.config_react_todo_web_enabled "true")}}
   react_todo_web:
     volumes:
-      - ./react_todo_web:/go/src/todo_center/react_todo_web
+      - ./react_todo_web/src:/usr/src/app/src
+      - ./react_todo_web/test:/usr/src/app/test
+      - ./react_todo_web/server.js:/usr/src/app/server.js
+      - ./react_todo_web/package.json:/usr/src/app/package.json
+      - ./react_todo_web/webpack.local.config.js:/usr/src/app/webpack.local.config.js
+      - ./react_todo_web/webpack.production.config.js:/usr/src/app/webpack.production.config.js
     entrypoint:
       - sleep
     command:
       - "1000000000"
+    ports:
+      - "{{ .Env.config_react_todo_web_dev_port }}:9090"
     environment:
-      GIN_MODE: debug
+      PRODUCTION: ""
+      SERVER_RENDERING: ""
+      DEV_HOST: {{ .Env.config_host }}
+      DEV_PORT: {{ .Env.config_react_todo_web_dev_port }}
   {{end}}
