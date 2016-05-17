@@ -103,6 +103,11 @@ services:
       PRODUCTION: "1"
       SERVER_RENDERING: "1"
       TODO_API_ENDPOINT: "https://{{ .Env.config_host }}:{{ .Env.config_todo_api_gateway_port }}"
+      {{if (eq .Env.config_todo_api_gateway_todo_api_service "php_todo_api")}}
+      LOCAL_TODO_API_ENDPOINT: "http://php_todo_api:3000"
+      {{else if (eq .Env.config_todo_api_gateway_todo_api_service "go_todo_api")}}
+      LOCAL_TODO_API_ENDPOINT: "http://go_todo_api:3000"
+      {{end}}
     depends_on:
       - todo_api_gateway
   {{end}}
