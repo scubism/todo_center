@@ -105,6 +105,12 @@ docker exec -it $CONTAINER bash
 # kill the process if needed
 ```
 
+### Update Todo Center & other repositories
+```
+# Run this script
+./scripts/update_repos.sh
+```
+
 ## Benchmarking
 Please read [docs/benchmark-with-ab.md](https://github.com/scubism/todo_center/blob/master/docs/benchmark-with-ab.md) for detail.
 

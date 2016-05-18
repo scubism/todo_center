@@ -2,7 +2,7 @@
 
 set -e
 
-available_repos=()
+source scripts/load_conf.sh
 
 install_dockernize() {
   if [ ! -e "/usr/local/bin/dockerize" ]; then
@@ -11,41 +11,6 @@ install_dockernize() {
     sudo tar -C /usr/local/bin -xzvf /tmp/dockerize-linux-amd64-v0.2.0.tar.gz
     rm /tmp/dockerize-linux-amd64-v0.2.0.tar.gz
   fi
-}
-
-load_config() {
-  # include parse_yaml function
-  . scripts/parse_yaml.sh
-
-  # read config files
-  eval $(parse_yaml config/config.yml "config_")
-  if [ -e "config/config-local.yml" ]; then
-    eval $(parse_yaml config/config-local.yml "config_")
-  fi
-
-  # set your local ip to the host variable when it's empty
-  if [ "$config_host" = "" ]; then
-    export config_host=$(ip addr | grep -E "192\.|100\." | awk '{print $2}' | sed 's/\/.*$//')
-  fi
-
-  echo "=== variables ==="
-  printenv | grep config_
-  echo "================="
-
-  local repos=($(printenv | grep '^config_.\+_git_url=.\+$' | sed "s/^config_//g" | sed "s/_git_url=.\+$//g"));
-
-  for ((i = 0; i < ${#repos[@]}; i++)) {
-      local confname="config_${repos[i]}_enabled"
-      if [ ${!confname} != "false" ]; then
-        available_repos=("${available_repos[@]}" ${repos[i]})
-      fi
-  }
-
-  echo "=== available repos ==="
-  for ((i = 0; i < ${#available_repos[@]}; i++)) {
-      echo "${available_repos[i]}"
-  }
-  echo "======================="
 }
 
 generate_docker_compose_file() {
@@ -76,13 +41,59 @@ clone_repo() {
   fi
 }
 
+clone_repo() {
+  local repo=$1
+  local confname="config_${repo}_git_url"
+  url=${!confname}
+  if [ ! -d $repo ]; then
+    git clone $url $repo
+  fi
+}
+
 clone_repos() {
   for ((i = 0; i < ${#available_repos[@]}; i++)) {
       clone_repo ${available_repos[i]}
   }
 }
 
+setup_repo() {
+  local repo=$1
+  local conf_url="config_${repo}_git_url"
+  local conf_branch="config_${repo}_git_branch"
+  local conf_submodule="config_${repo}_git_submodule"
+
+  url=${!conf_url}
+  branch=${!conf_branch:-'master'}
+  has_submodule=${!conf_submodule:-'false'}
+
+  if [ -d $repo ]; then
+    echo "=== Setting up $repo ==="
+    cd $repo
+
+    local local_branch=`git rev-parse --verify --quiet $branch`
+    if [ "$local_branch" = "" ]; then
+      git fetch origin
+      git checkout -b $branch origin/$branch
+    else
+      git pull origin $branch
+    fi
+
+    if [ $has_submodule = 'true' ]; then
+      echo "=== Getting submodules of $repo ==="
+      git submodule init
+      git submodule update
+    fi
+
+    cd ..
+  fi
+}
+
 setup_repos() {
+  for ((i = 0; i < ${#available_repos[@]}; i++)) {
+      setup_repo ${available_repos[i]}
+  }
+
+  # Special case
   if [ $config_todo_api_gateway_enabled != "false" ]; then
     if [ ! -e "todo_api_gateway/server.crt" ]; then
       echo 'generate self certs..'
@@ -105,3 +116,4 @@ clone_repos
 setup_repos
 
 echo "Finished!"
+

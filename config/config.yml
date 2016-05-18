@@ -12,6 +12,11 @@ base_service: "default_base_service"
 #   - full: with swagger_ui & swagger_editor
 compose_mode: min
 
+todo_center:
+  git:
+    url: https://github.com/scubism/todo_center.git
+    branch: master
+
 # === Settings for each service ===
 php_todo_api:
   enabled: true
@@ -29,6 +34,7 @@ react_todo_web:
   enabled: true
   git:
     url: https://github.com/scubism/react_todo_web.git
+    branch: go_master
   port: 8100
   dev_port: 9090
 
