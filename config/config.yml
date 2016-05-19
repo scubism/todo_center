@@ -15,7 +15,7 @@ compose_mode: min
 todo_center:
   git:
     url: https://github.com/scubism/todo_center.git
-    branch: master
+    branch: features/for_node_web
 
 # === Settings for each service ===
 php_todo_api:
