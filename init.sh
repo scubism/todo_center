@@ -38,6 +38,7 @@ clone_repo() {
   url=${!confname}
   if [ ! -d $repo ]; then
     git clone $url $repo
+    setup_repo $repo
   fi
 }
 
@@ -58,11 +59,9 @@ clone_repos() {
 
 setup_repo() {
   local repo=$1
-  local conf_url="config_${repo}_git_url"
   local conf_branch="config_${repo}_git_branch"
   local conf_submodule="config_${repo}_git_submodule"
 
-  url=${!conf_url}
   branch=${!conf_branch:-'master'}
   has_submodule=${!conf_submodule:-'false'}
 
@@ -88,11 +87,7 @@ setup_repo() {
   fi
 }
 
-setup_repos() {
-  for ((i = 0; i < ${#available_repos[@]}; i++)) {
-      setup_repo ${available_repos[i]}
-  }
-
+init_repos() {
   # Special case
   if [ $config_todo_api_gateway_enabled != "false" ]; then
     if [ ! -e "todo_api_gateway/server.crt" ]; then
@@ -113,7 +108,7 @@ load_config
 generate_docker_compose_file
 make_data_dirs
 clone_repos
-setup_repos
+init_repos
 
 echo "Finished!"
 

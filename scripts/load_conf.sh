@@ -16,7 +16,7 @@ load_config() {
 
   # set your local ip to the host variable when it's empty
   if [ "$config_host" = "" ]; then
-    export config_host=$(ip addr | grep -E "192\.|10\.10" | awk '{print $2}' | sed 's/\/.*$//')
+    export config_host=$(ip addr | grep -E "192\.|100\.94" | awk '{print $2}' | sed 's/\/.*$//')
   fi
 
   echo "=== variables ==="
@@ -26,7 +26,7 @@ load_config() {
   local repos=($(printenv | grep '^config_.\+_git_url=.\+$' | sed "s/^config_//g" | sed "s/_git_url=.\+$//g"));
   for ((i = 0; i < ${#repos[@]}; i++)) {
       local confname="config_${repos[i]}_enabled"
-      if [ ${!confname} != "false" ]; then
+      if [[ ${!confname} != "false" ]]; then
         available_repos=("${available_repos[@]}" ${repos[i]})
       fi
   }

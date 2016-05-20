@@ -28,7 +28,7 @@ services:
       file: config/docker-compose-common.yml
       service: {{ .Env.config_base_service }}
     container_name: mariadb
-    image: bitnami/mariadb
+    image: bitnami/mariadb:5.5.48-0-r01
     volumes:
       - /data/mariadb/data:/bitnami/mariadb/data
       - /data/mariadb/conf:/bitnami/mariadb/conf
