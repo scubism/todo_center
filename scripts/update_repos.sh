@@ -51,11 +51,5 @@ update_repos() {
   }
 }
 
-update_center() {
-  echo "=== Updating Center Repo ==="
-  git pull origin $config_todo_center_git_branch
-}
-
 load_config
-update_center
 update_repos
