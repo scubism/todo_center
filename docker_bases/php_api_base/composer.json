@@ -9,11 +9,18 @@
         "laravel/lumen-framework": "5.2.*",
         "vlucas/phpdotenv": "~2.2",
         "vluzrmos/lumen-cors": "2.1.*",
-        "doctrine/dbal": "2.5.*"
+        "doctrine/dbal": "2.5.*",
+        "rutorika/sortable": "^3.2",
+        "guzzlehttp/guzzle": "~6.0",
+        "firebase/php-jwt": "^3.0",
+        "prettus/l5-repository": "^2.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
-        "phpunit/phpunit": "~4.0"
+        "phpunit/phpunit": "~4.0",
+        "mockery/mockery": "^0.9.4",
+        "satooshi/php-coveralls": "dev-master",
+        "squizlabs/php_codesniffer": "2.*"
     },
     "autoload": {
         "psr-4": {

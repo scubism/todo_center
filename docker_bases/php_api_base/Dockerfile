@@ -1,16 +1,15 @@
-FROM php:7-fpm
+FROM scubism/php7-nginx
 
-# Add unzip & git for composer
-RUN apt-get update \
-    && apt-get install libmcrypt-dev nano bash git unzip zlib1g-dev -y \
-    && rm -rf /var/lib/apt/lists/* \
-    && docker-php-ext-install pdo pdo_mysql mcrypt iconv mbstring zip
+RUN curl -L -k -o /tmp/dockerize.tar.gz https://github.com/jwilder/dockerize/releases/download/v0.2.0/dockerize-linux-amd64-v0.2.0.tar.gz && \
+    tar -C /usr/local/bin -xzvf /tmp/dockerize.tar.gz && \
+    rm /tmp/dockerize.tar.gz
 
-WORKDIR /var/www/html
+RUN rm -f /etc/nginx/conf.d/default.conf && \
+    rm -rf /var/www/html
 
-RUN curl -sS https://getcomposer.org/installer | php
+WORKDIR /var/www/api
 
-RUN mv composer.phar /usr/bin/composer
+COPY default.conf /etc/nginx/conf.d/default.conf
 
 COPY composer.json  composer.json
 COPY composer.lock  composer.lock
