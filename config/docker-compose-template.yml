@@ -108,8 +108,6 @@ services:
       {{else if (eq .Env.config_todo_api_gateway_todo_api_service "go_todo_api")}}
       LOCAL_TODO_API_ENDPOINT: "http://go_todo_api:3000"
       {{end}}
-    depends_on:
-      - todo_api_gateway
   {{end}}
 
   {{if (eq .Env.config_compose_mode "full")}}
