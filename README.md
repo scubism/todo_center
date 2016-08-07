@@ -25,14 +25,20 @@ Install [Docker Engine](https://www.docker.com/products/docker-engine) and [Dock
 ```
 vagrant up
 
-# For the first time, you should also type the following commands for share folder problem.
+# For the first time, the following error will occur.
+# /sbin/mount.vboxsf: mounting failed with the error: No such device
+# Then you should type the following commands for share folder problem.
 vagrant plugin install vagrant-vbguest
 vagrant vbguest
+vagrant reload
 
 # Login to the VM.
 vagrant ssh
 # Now you are in /vagrant directory (not in /home/vagrant directory).
 ```
+
+If you have any further vagrant installation problems,
+see [docs/vagrant-tips.md](https://github.com/scubism/todo_center/blob/master/docs/vagrant-tips.md).
 
 Edit the local configuration if needed.
 
@@ -43,7 +49,10 @@ vi config/config-local.yml
 Execute a init file for the first time or config changed.
 
 ```
-./init.sh
+source init.sh  # execute on every login if you use environmental variables
+# Or you can excute it on login automatically by
+echo "source init.sh" >> ~/.bashrc
+
 # This will clone and setup dependent microservice repositories
 # and create a docker-compose.yml file from config/config.yml and config/config-local.yml.
 ```
@@ -65,7 +74,7 @@ You can access contents via public endpoints for microservices as follows.
 
 ```
 # Load config environment
-eval $(./init.sh | grep config_)
+source init.sh
 
 # For TODO API
 curl -k https://$config_host:$config_todo_api_gateway_port
